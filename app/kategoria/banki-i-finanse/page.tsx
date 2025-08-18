@@ -3,6 +3,7 @@ import ScrollToTop from "@/components/scroll-to-top"
 import CategoryPageView from "@/components/category-page-view"
 import categoriesData from "@/data/categories.json"
 
+export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: "Banki i finanse - Czy Polska Firma",
   description: "Sprawdź indeks polskości banków i usług finansowych. Które instytucje finansowe są polskie?",
