@@ -15,18 +15,36 @@ export const metadata: Metadata = {
   },
 };
 
-export default function CategoryBankiFinanse() {
-  const category = categoriesData["banki-i-finanse"];
+type SearchParams = { [key: string]: string | string[] | undefined };
 
-  if (!category) {
-    return <div>Kategoria nie została znaleziona</div>;
-  }
+export default function CategoryBankiFinanse({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const category = categoriesData["banki-i-finanse"];
+  if (!category) return <div>Kategoria nie została znaleziona</div>;
+
+  const q = typeof searchParams.q === "string" ? searchParams.q : "";
+  const sort = typeof searchParams.sort === "string" ? searchParams.sort : "score-desc";
+  const minScore =
+    typeof searchParams.minScore === "string" ? parseInt(searchParams.minScore) || 0 : 0;
+  const badges =
+    typeof searchParams.badges === "string" && searchParams.badges.length > 0
+      ? searchParams.badges.split(",").filter(Boolean)
+      : [];
 
   return (
     <div className="min-h-screen bg-slate-50">
       <ScrollToTop />
       <Suspense fallback={<div>Ładowanie…</div>}>
-        <CategoryPageView category={category} />
+        <CategoryPageView
+          category={category}
+          initialQ={q}
+          initialSort={sort}
+          initialMinScore={minScore}
+          initialBadges={badges}
+        />
       </Suspense>
     </div>
   );

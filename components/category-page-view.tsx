@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { useState, useMemo, useEffect } from "react"
-import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
-import { ChevronRight, Search, X, Info, Flag, ExternalLink } from "lucide-react"
-import { CompanyLogo } from "@/components/company-logo"
-import companyDetailsData from "@/data/company-details.json"
+import { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation"; // UWAGA: bez useSearchParams
+import { ChevronRight, Search, X, Info, Flag, ExternalLink } from "lucide-react";
+import { CompanyLogo } from "@/components/company-logo";
+import companyDetailsData from "@/data/company-details.json";
 
 interface CategoryItem {
   id: string
@@ -27,7 +27,11 @@ interface Category {
 }
 
 interface CategoryPageViewProps {
-  category: Category
+category: Category;
+initialQ?: string;
+initialSort?: string;
+initialMinScore?: number;
+initialBadges?: string[];
 }
 
 const badgeLabels: Record<string, string> = {
@@ -116,16 +120,19 @@ function calculateMicroBreakdown(item: CategoryItem) {
   }
 }
 
-export default function CategoryPageView({ category }: CategoryPageViewProps) {
+export default function CategoryPageView({
+  category,
+  initialQ = "",
+  initialSort = "score-desc",
+  initialMinScore = 0,
+  initialBadges = [],
+}: CategoryPageViewProps) {
   const router = useRouter()
-  const searchParams = useSearchParams()
 
-  const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "")
-  const [sortBy, setSortBy] = useState(searchParams.get("sort") || "score-desc")
-  const [minScore, setMinScore] = useState(Number.parseInt(searchParams.get("minScore") || "0"))
-  const [selectedBadges, setSelectedBadges] = useState<string[]>(
-    searchParams.get("badges")?.split(",").filter(Boolean) || [],
-  )
+  const [searchTerm, setSearchTerm] = useState(initialQ)
+  const [sortBy, setSortBy] = useState(initialSort)
+  const [minScore, setMinScore] = useState(initialMinScore)
+  const [selectedBadges, setSelectedBadges] = useState<string[]>(initialBadges)
   const [visibleItems, setVisibleItems] = useState(12)
   const [showMobileFilters, setShowMobileFilters] = useState(false)
 
