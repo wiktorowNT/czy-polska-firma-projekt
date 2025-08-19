@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function BankiFinansePage() {
+export default function CategoryBankiFinanse() {
   const category = categoriesData["banki-i-finanse"]
 
   if (!category) {
@@ -21,9 +21,12 @@ export default function BankiFinansePage() {
   }
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <div className="min-h-screen bg-slate-50">
       <ScrollToTop />
       <CategoryPageView category={category} />
     </div>
+    </Suspense>
   )
 }
+
